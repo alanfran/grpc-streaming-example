@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "example/v1/example.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/things": {
+      "post": {
+        "operationId": "CreateBigFile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BigFile"
+            }
+          }
+        },
+        "tags": [
+          "Example"
+        ]
+      }
+    },
+    "/v1/{name=things/*}": {
+      "get": {
+        "operationId": "GetBigFile",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/v1GetBigFileResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Example"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeStreamError": {
+      "type": "object",
+      "properties": {
+        "grpc_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1BigFile": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "resource name, ex: \"BigFiles/some-UUID\""
+        }
+      }
+    },
+    "v1GetBigFileResponse": {
+      "type": "object",
+      "properties": {
+        "big_file_chunk": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    }
+  },
+  "x-stream-definitions": {
+    "v1GetBigFileResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/v1GetBigFileResponse"
+        },
+        "error": {
+          "$ref": "#/definitions/runtimeStreamError"
+        }
+      },
+      "title": "Stream result of v1GetBigFileResponse"
+    }
+  }
+}
