@@ -7,6 +7,7 @@ package example.v1;
 option go_package = "github.com/alanfran/grpc-streaming-example/pkg/example/v1;example";
 
 service Example {
+  // Takes a stream of byte chunks and returns the file's metadata.
   rpc CreateBigFile(stream CreateBigFileRequest) returns (BigFile) {
     option (google.api.http) = {
       post : "/v1/bigFiles"
@@ -23,6 +24,8 @@ service Example {
 message BigFile {
   // resource name, ex: "bigFiles/some-UUID"
   string name = 1;
+  // size of the big file in bytes
+  int64 size_bytes = 2;
 }
 
 message CreateBigFileRequest {
@@ -35,4 +38,5 @@ message GetBigFileRequest {
   // resource name, ex: "bigFiles/some-UUID"
   string name = 1;
 };
+
 message GetBigFileResponse { bytes big_file_chunk = 1; };
