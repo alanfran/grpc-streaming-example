@@ -7,29 +7,32 @@ package example.v1;
 option go_package = "github.com/alanfran/grpc-streaming-example/pkg/example/v1;example";
 
 service Example {
-  rpc CreateBigFile(stream CreateBigFileRequest)
-      returns (BigFile) {
+  rpc CreateBigFile(stream CreateBigFileRequest) returns (BigFile) {
     option (google.api.http) = {
-      post : "/v1/things"
+      post : "/v1/bigFiles"
     };
   };
 
   rpc GetBigFile(GetBigFileRequest) returns (stream GetBigFileResponse) {
     option (google.api.http) = {
-      get : "/v1/{name=things/*}"
+      get : "/v1/{name=bigFiles/*}"
     };
   };
 }
 
 message BigFile {
-  // resource name, ex: "BigFiles/some-UUID"
+  // resource name, ex: "bigFiles/some-UUID"
   string name = 1;
 }
 
 message CreateBigFileRequest {
+  // resource name, ex: "bigFiles/some-UUID"
   string name = 1;
   bytes big_file_chunk = 2;
 };
 
-message GetBigFileRequest { string name = 1; };
+message GetBigFileRequest {
+  // resource name, ex: "bigFiles/some-UUID"
+  string name = 1;
+};
 message GetBigFileResponse { bytes big_file_chunk = 1; };
