@@ -6,6 +6,10 @@ package example.v1;
 
 option go_package = "github.com/alanfran/grpc-streaming-example/pkg/example/v1;example";
 
+// If you are designing APIs with gRPC/protobuf, read Google's API Design Guide
+// https://cloud.google.com/apis/design/
+// Don't be tempted to skim through it. It's densely packed with Googly wisdom.
+
 service Example {
   // Takes a stream of byte chunks and returns the file's metadata.
   rpc CreateBigFile(stream CreateBigFileRequest) returns (BigFile) {
