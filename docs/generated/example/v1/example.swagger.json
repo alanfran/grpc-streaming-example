@@ -11,8 +11,9 @@
     "application/json"
   ],
   "paths": {
-    "/v1/things": {
+    "/v1/bigFiles": {
       "post": {
+        "summary": "Takes a stream of byte chunks and returns the file's metadata.",
         "operationId": "CreateBigFile",
         "responses": {
           "200": {
@@ -27,7 +28,7 @@
         ]
       }
     },
-    "/v1/{name=things/*}": {
+    "/v1/{name=bigFiles/*}": {
       "get": {
         "operationId": "GetBigFile",
         "responses": {
@@ -41,6 +42,7 @@
         "parameters": [
           {
             "name": "name",
+            "description": "resource name, ex: \"bigFiles/some-UUID\"",
             "in": "path",
             "required": true,
             "type": "string"
@@ -95,7 +97,12 @@
       "properties": {
         "name": {
           "type": "string",
-          "title": "resource name, ex: \"BigFiles/some-UUID\""
+          "title": "resource name, ex: \"bigFiles/some-UUID\""
+        },
+        "size_bytes": {
+          "type": "string",
+          "format": "int64",
+          "title": "size of the big file in bytes"
         }
       }
     },
