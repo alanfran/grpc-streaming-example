@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-// define a mock stream
+// MockCreateBigFileStream mocks the stream that CreateBigFile will consume.
 type MockCreateBigFileStream struct {
 	// embed this interface to make the type checker happy
 	grpc.ServerStream
@@ -97,6 +97,9 @@ func TestCreateBigFile(t *testing.T) {
 		"4 MiB file": {
 			nBytes: 4 * 1024 * 1024,
 		},
+		"12 MiB file": {
+			nBytes: 12 * 1024 * 1024,
+		},
 	}
 
 	for name, c := range cases {
@@ -114,9 +117,11 @@ func TestCreateBigFile(t *testing.T) {
 			// create the mocked stream
 			stream := NewCreateBigFileStream(randomBytes)
 
-			// feed the random bytes into example.CreateBigFile
+			// call CreateBigFile with the mocked stream
 			err = server.CreateBigFile(stream)
 			require.Nil(t, err)
+
+			// assert the returned metadata has the right file size
 			require.Equal(t, c.nBytes, stream.response.GetSizeBytes())
 		})
 	}
