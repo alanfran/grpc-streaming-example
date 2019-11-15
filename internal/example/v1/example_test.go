@@ -55,7 +55,6 @@ func (m MockCreateBigFileStream) SendAndClose(msg *exampleproto.BigFile) error {
 
 func NewCreateBigFileStream(contents []byte) MockCreateBigFileStream {
 	// iterator used internally to track the stream progress
-	// this has to be a pointer
 	i := 0
 
 	// split up the contents into chunks

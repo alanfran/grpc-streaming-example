@@ -16,8 +16,10 @@ const MaxBytesPerChunk = 1024 * 1024
 type ExampleServer struct {
 }
 
+// compile-time assertion that ExampleServer implements the service's proto interface
 var _ example.ExampleServer = ExampleServer{}
 
+// CreateBigFile takes a stream of bytes and returns metadata to the client.
 func (e ExampleServer) CreateBigFile(stream example.Example_CreateBigFileServer) error {
 	var contents []byte
 
@@ -49,6 +51,7 @@ func (e ExampleServer) CreateBigFile(stream example.Example_CreateBigFileServer)
 	return nil
 }
 
+// GetBigFile returns the contents of a requested big file as a stream of bytes.
 func (e ExampleServer) GetBigFile(req *example.GetBigFileRequest, stream example.Example_GetBigFileServer) error {
 	// open a big file
 
